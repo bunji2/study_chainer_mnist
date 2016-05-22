@@ -1,12 +1,28 @@
 ##概要
 
-Chainer の MNIST を使ったサンプルスクリプトを拡張し、単純パーセプトロン (SP)、多層パーセプトロン (MLP)、畳み込みニューラルネットワーク (CNN) の "accuracy" と "loss" を比較してみました。
+深層学習のフレームワーク Chainer の MNIST を使ったサンプルスクリプトを試してみました。
 
-##ニューラルネットワーク
+このサンプルは MNIST という手書きの0～9の数字を分類するための多層パーセプトロン (MLP) の実装例なんですが、コード構成をじっと眺めているうち、net.py を拡張すれば、別の方式に変更できそうなことに気が付きました。
+
+今回は、多層パーセプトロン (MLP) に加えて、単純パーセプトロン (SP)と畳み込みニューラルネットワーク (CNN) を追加しました。そして、train_mnist.py が標準出力に表示する各 epoch ごとの "accuracy" と "loss" の推移を比較してみました。
+
+##MNISTサンプル
+
+今回試した MNIST サンプルは[こちら](https://github.com/pfnet/chainer/tree/master/examples/mnist)にあります。
+
+重要なスクリプトは以下の通りです。
+
+|スクリプト|概要|
+|:--|:--|
+|data.py|MNISTのデータセットを読み込む。手元にデータセットがないときはネットからダウンロードする。|
+|net.py|ニューラルネットワークのクラスを定義する。|
+|train_mnist.py|MNISTのデータセットを net.py のニューラルネットワークで学習する。|
+
+##使用したニューラルネットワーク
 
 MNIST サンプルに付属の net.py に SP と CNN 用のクラスを追加しました。
 
-```
+```python
 import chainer
 import chainer.functions as F
 import chainer.links as L
@@ -31,39 +47,9 @@ class MnistMLP(chainer.Chain):
         h2 = F.relu(self.l2(h1))
         return self.l3(h2)
 
+# ここまでオリジナルのまま。
 
-class MnistMLPParallel(chainer.Chain):
-
-    """An example of model-parallel MLP.
-
-    This chain combines four small MLPs on two different devices.
-
-    """
-    def __init__(self, n_in, n_units, n_out):
-        super(MnistMLPParallel, self).__init__(
-            first0=MnistMLP(n_in, n_units // 2, n_units).to_gpu(0),
-            first1=MnistMLP(n_in, n_units // 2, n_units).to_gpu(1),
-            second0=MnistMLP(n_units, n_units // 2, n_out).to_gpu(0),
-            second1=MnistMLP(n_units, n_units // 2, n_out).to_gpu(1),
-        )
-
-    def __call__(self, x):
-        # assume x is on GPU 0
-        x1 = F.copy(x, 1)
-
-        z0 = self.first0(x)
-        z1 = self.first1(x1)
-
-        # sync
-        h0 = z0 + F.copy(z1, 0)
-        h1 = z1 + F.copy(z0, 1)
-
-        y0 = self.second0(F.relu(h0))
-        y1 = self.second1(F.relu(h1))
-
-        # sync
-        y = y0 + F.copy(y1, 0)
-        return y
+# ここから追加したクラス
 
 class MnistSP(chainer.Chain):
 
@@ -99,7 +85,10 @@ class MnistCNN(chainer.Chain):
 
     def __call__(self, x):
         # param x --- chainer.Variable of array
+
+        # 以下のような変換が必要
         x.data = x.data.reshape((len(x.data), 1, 28, 28))
+
         h = F.relu(self.conv1(x))
         h = F.max_pooling_2d(h, 2)
         h = F.relu(self.conv2(h))
@@ -113,6 +102,16 @@ class MnistCNN(chainer.Chain):
 
 ```
 
+Convolution2D の入力がわかりにくかった。
+
+学習を行うスクリプト train_mnist.py は使用したニューラルネットワークのグラフデータを dot 形式で出力してくれます。graphviz で PNG に変換しました。リンクしときます：
+
+[MnistSP のグラフ](graph.sp.png) 
+
+[MnistMLP のグラフ](graph.mlp.png) 
+
+[MnistCNN のグラフ](graph.cnn.png) 
+
 ## 結果
 
 ざっくりいうと、accuracy (高いほど良い)では SP が 0.93、MLP が 0.98、CNN が 0.99。
@@ -123,6 +122,9 @@ loss (低いほど良い)では SP が 0.26、MLP が 0.1、CNN が 0.05。
 ![accuracy](fig_accuracy.png)
 ![loss](fig_loss.png)
 
-## 引用
+## リンク
 [Chainer](http://chainer.org/)
+
 [CNNの実装で参考にしたページ](http://ttlg.hateblo.jp/entry/2016/02/11/181322)
+
+[コードはこちらにまとめておいてます](https://github.com/bunji2/study_chainer_mnist)
