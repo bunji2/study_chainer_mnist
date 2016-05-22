@@ -101,16 +101,3 @@ class MnistCNN(chainer.Chain):
         y = self.l2(h)
         return y
 
-class MnistSP(chainer.Chain):
-
-    """An example of simple perceptron for MNIST dataset.
-
-    """
-    def __init__(self, n_in=784, n_out=10):
-        super(MnistSP, self).__init__(
-            l1=L.Linear(n_in, n_out),
-        )
-
-    def __call__(self, x):
-        return self.l1(x)
-
