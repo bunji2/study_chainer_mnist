@@ -1,6 +1,6 @@
 ##概要
 
-Chainer の MNIST を使ったサンプルスクリプトを拡張し、単純パーセプトロン (SP)、多層パーセプトロン (MLP)、畳み込みニューラルネットワーク (CNN) の "accuracy" と "loss" を比較しました。
+Chainer の MNIST を使ったサンプルスクリプトを拡張し、単純パーセプトロン (SP)、多層パーセプトロン (MLP)、畳み込みニューラルネットワーク (CNN) の "accuracy" と "loss" を比較してみました。
 
 ##ニューラルネットワーク
 
@@ -118,7 +118,11 @@ class MnistCNN(chainer.Chain):
 ざっくりいうと、accuracy (高いほど良い)では SP が 0.93、MLP が 0.98、CNN が 0.99。
 loss (低いほど良い)では SP が 0.26、MLP が 0.1、CNN が 0.05。
 
-というわけで MNIST の手書き数字の認識において、今回検証した中では CNN が最も優れた方式だということがわかりました。
+というわけで MNIST の手書き数字の認識において、今回検証した中では CNN が最も優れた方式だということを確認できました。
 
 ![accuracy](fig_accuracy.png)
 ![loss](fig_loss.png)
+
+## 引用
+[Chainer](http://chainer.org/)
+[CNNの実装で参考にしたページ](http://ttlg.hateblo.jp/entry/2016/02/11/181322)
