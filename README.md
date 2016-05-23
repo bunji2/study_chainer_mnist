@@ -1,63 +1,63 @@
 # study_chainer_mnist
 
-## ‚Í‚¶‚ß‚É
-Chainer ‚Ì MNIST ‚ð—p‚¢‚½‘½‘wƒp[ƒZƒvƒgƒƒ“‚ÌƒTƒ“ƒvƒ‹‚ð‰ü‘¢‚µ‚Ä‚Ý‚éB
+## ã¯ã˜ã‚ã«
+Chainer ã® MNIST ã‚’ç”¨ã„ãŸå¤šå±¤ãƒ‘ãƒ¼ã‚»ãƒ—ãƒˆãƒ­ãƒ³ã®ã‚µãƒ³ãƒ—ãƒ«ã‚’æ”¹é€ ã—ã¦ã¿ã‚‹ã€‚
 
-|ƒXƒNƒŠƒvƒg|ŠT—v|‰ü‘¢‚Ì—L–³|
+|ã‚¹ã‚¯ãƒªãƒ—ãƒˆ|æ¦‚è¦|æ”¹é€ ã®æœ‰ç„¡|
 |:--|:--|:--|
-|data.py|MNIST‚Ìƒf[ƒ^ƒZƒbƒg‚ðŽæ“¾‚·‚éƒXƒNƒŠƒvƒg|‚È‚µ|
-|net.py|ƒjƒ…[ƒ‰ƒ‹ƒlƒbƒgƒ[ƒN‚ð’è‹`‚·‚éƒXƒNƒŠƒvƒgB’Pƒƒp[ƒZƒvƒgƒƒ“ MnistSPA‘½‘wƒp[ƒZƒvƒgƒƒ“ MnistMLPAô‚Ýž‚Ýƒjƒ…[ƒ‰ƒ‹ƒlƒbƒg MnistCNN ‚ð’è‹`‚·‚éB|‚ ‚è|
-|train_mnist.py|data.py ‚Æ net.py ‚ðŽg‚Á‚½ŠwK—pƒXƒNƒŠƒvƒgB|‚ ‚è|
+|data.py|MNISTã®ãƒ‡ãƒ¼ã‚¿ã‚»ãƒƒãƒˆã‚’å–å¾—ã™ã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆ|ãªã—|
+|net.py|ãƒ‹ãƒ¥ãƒ¼ãƒ©ãƒ«ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’å®šç¾©ã™ã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚å˜ç´”ãƒ‘ãƒ¼ã‚»ãƒ—ãƒˆãƒ­ãƒ³ MnistSPã€å¤šå±¤ãƒ‘ãƒ¼ã‚»ãƒ—ãƒˆãƒ­ãƒ³ MnistMLPã€ç•³ã¿è¾¼ã¿ãƒ‹ãƒ¥ãƒ¼ãƒ©ãƒ«ãƒãƒƒãƒˆ MnistCNN ã‚’å®šç¾©ã™ã‚‹ã€‚|ã‚ã‚Š|
+|train_mnist.py|data.py ã¨ net.py ã‚’ä½¿ã£ãŸå­¦ç¿’ç”¨ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚|ã‚ã‚Š|
 
 
 ## train_mnist.py
 
-- ˆ—“à—e
+- å‡¦ç†å†…å®¹
 
-MNIST ‚Ìƒf[ƒ^ƒZƒbƒg‚ðŽg‚Á‚ÄŠwK‚·‚éB
+MNIST ã®ãƒ‡ãƒ¼ã‚¿ã‚»ãƒƒãƒˆã‚’ä½¿ã£ã¦å­¦ç¿’ã™ã‚‹ã€‚
 
-- ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“
+- ã‚³ãƒžãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³
 
 ```
 tran_mnist.py --net2 [sp|mlp|cnn]
 ```
 
---net2 ƒIƒvƒVƒ‡ƒ“‚ð’Ç‰ÁB
+--net2 ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ ã€‚
 
-|’l|ŠT—v|
+|å€¤|æ¦‚è¦|
 |:--|:--|
-|sp|’Pƒƒp[ƒZƒvƒgƒƒ“|
-|mlp|‘½‘wƒp[ƒZƒvƒgƒƒ“|
-|cnn|ô‚Ýž‚Ýƒjƒ…[ƒ‰ƒ‹ƒlƒbƒg|
+|sp|å˜ç´”ãƒ‘ãƒ¼ã‚»ãƒ—ãƒˆãƒ­ãƒ³|
+|mlp|å¤šå±¤ãƒ‘ãƒ¼ã‚»ãƒ—ãƒˆãƒ­ãƒ³|
+|cnn|ç•³ã¿è¾¼ã¿ãƒ‹ãƒ¥ãƒ¼ãƒ©ãƒ«ãƒãƒƒãƒˆ|
 
-- ŽÀs—á
+- å®Ÿè¡Œä¾‹
 ```
 \# train_mnist.py --net2 mlp
 ```
 
 ## classify.py
 
-- ˆ—“à—e
+- å‡¦ç†å†…å®¹
 
-0`9 ‚ÌŽè‘‚«”Žš‚Ì‰æ‘œ‚ð•ª—Þ‚·‚éB
+0ï½ž9 ã®æ‰‹æ›¸ãæ•°å­—ã®ç”»åƒã‚’åˆ†é¡žã™ã‚‹ã€‚
 
-- ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“
+- ã‚³ãƒžãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³
 
 ```
 Usage: classify.py [sp|mlp|cnn] model_path image_path
 ```
 
-‘æˆêˆø”FŽg—p‚·‚éƒjƒ…[ƒ‰ƒ‹ƒlƒbƒg
-‘æ“ñˆø”Ftrain_mnist.py ‚Åì¬‚µ‚½ƒ‚ƒfƒ‹ƒf[ƒ^‚ÌƒpƒX
-‘æŽOˆø”F•ª—Þ‘ÎÛ‚Æ‚È‚éŽè‘‚«”Žš‚Ì‰æ‘œƒf[ƒ^‚ÌƒpƒX
+ç¬¬ä¸€å¼•æ•°ï¼šä½¿ç”¨ã™ã‚‹ãƒ‹ãƒ¥ãƒ¼ãƒ©ãƒ«ãƒãƒƒãƒˆ
+ç¬¬äºŒå¼•æ•°ï¼štrain_mnist.py ã§ä½œæˆã—ãŸãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã®ãƒ‘ã‚¹
+ç¬¬ä¸‰å¼•æ•°ï¼šåˆ†é¡žå¯¾è±¡ã¨ãªã‚‹æ‰‹æ›¸ãæ•°å­—ã®ç”»åƒãƒ‡ãƒ¼ã‚¿ã®ãƒ‘ã‚¹
 
-|‘æˆêˆø”‚Ì’l|ŠT—v|
+|ç¬¬ä¸€å¼•æ•°ã®å€¤|æ¦‚è¦|
 |:--|:--|
-|sp|’Pƒƒp[ƒZƒvƒgƒƒ“|
-|mlp|‘½‘wƒp[ƒZƒvƒgƒƒ“|
-|cnn|ô‚Ýž‚Ýƒjƒ…[ƒ‰ƒ‹ƒlƒbƒg|
+|sp|å˜ç´”ãƒ‘ãƒ¼ã‚»ãƒ—ãƒˆãƒ­ãƒ³|
+|mlp|å¤šå±¤ãƒ‘ãƒ¼ã‚»ãƒ—ãƒˆãƒ­ãƒ³|
+|cnn|ç•³ã¿è¾¼ã¿ãƒ‹ãƒ¥ãƒ¼ãƒ©ãƒ«ãƒãƒƒãƒˆ|
 
-- ŽÀs—á
+- å®Ÿè¡Œä¾‹
 
 ```
 \# python classify.py cnn model.cnn.npz number/four.png
@@ -76,4 +76,4 @@ output:
 class:  4
 ```
 
-CNN ‚Å“ü—Í‰æ‘œ‚ð•ª—Þ‚µ‚½Œ‹‰Ê‚ªu4v‚Å‚ ‚é‚±‚Æ‚ðŽ¦‚·B
+CNN ã§å…¥åŠ›ç”»åƒã‚’åˆ†é¡žã—ãŸçµæžœãŒã€Œ4ã€ã§ã‚ã‚‹ã“ã¨ã‚’ç¤ºã™ã€‚
