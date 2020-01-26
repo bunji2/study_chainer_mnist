@@ -1,26 +1,26 @@
-##�T�v
+## 概要
 
-�[�w�w�K�̃t���[�����[�N Chainer �� MNIST ���g�����T���v���X�N���v�g�������Ă݂܂����B
+深層学習のフレームワーク Chainer の MNIST を使ったサンプルスクリプトを試してみました。
 
-���̃T���v���� MNIST �Ƃ����菑����0�`9�̐����𕪗ނ��邽�߂̑��w�p�[�Z�v�g���� (MLP) �̎�����Ȃ�ł����A�R�[�h�\���������ƒ��߂Ă��邤���Anet.py ���g������΁A�ʂ̕����ɕύX�ł������Ȃ��ƂɋC���t���܂����B
+このサンプルは MNIST という手書きの0～9の数字を分類するための多層パーセプトロン (MLP) の実装例なんですが、コード構成をじっと眺めているうち、net.py を拡張すれば、別の方式に変更できそうなことに気が付きました。
 
-����́A���w�p�[�Z�v�g���� (MLP) �ɉ����āA�P���p�[�Z�v�g���� (SP)�Ə�ݍ��݃j���[�����l�b�g���[�N (CNN) ��ǉ����܂����B�����āAtrain_mnist.py ���W���o�͂ɕ\������e epoch ���Ƃ� "accuracy" �� "loss" �̐��ڂ��r���Ă݂܂����B
+今回は、多層パーセプトロン (MLP) に加えて、単純パーセプトロン (SP)と畳み込みニューラルネットワーク (CNN) を追加しました。そして、train_mnist.py が標準出力に表示する各 epoch ごとの "accuracy" と "loss" の推移を比較してみました。
 
-##MNIST�T���v��
+## MNISTサンプル
 
-���񎎂��� MNIST �T���v����[������](https://github.com/pfnet/chainer/tree/master/examples/mnist)�ɂ���܂��B
+今回試した MNIST サンプルは[こちら](https://github.com/pfnet/chainer/tree/master/examples/mnist)にあります。
 
-�d�v�ȃX�N���v�g�͈ȉ��̒ʂ�ł��B
+重要なスクリプトは以下の通りです。
 
-|�X�N���v�g|�T�v|
+|スクリプト|概要|
 |:--|:--|
-|data.py|MNIST�̃f�[�^�Z�b�g��ǂݍ��ށB�茳�Ƀf�[�^�Z�b�g���Ȃ��Ƃ��̓l�b�g����_�E�����[�h����B|
-|net.py|�j���[�����l�b�g���[�N�̃N���X���`����B|
-|train_mnist.py|MNIST�̃f�[�^�Z�b�g�� net.py �̃j���[�����l�b�g���[�N�Ŋw�K����B|
+|data.py|MNISTのデータセットを読み込む。手元にデータセットがないときはネットからダウンロードする。|
+|net.py|ニューラルネットワークのクラスを定義する。|
+|train_mnist.py|MNISTのデータセットを net.py のニューラルネットワークで学習する。|
 
-##�g�p�����j���[�����l�b�g���[�N
+## 使用したニューラルネットワーク
 
-MNIST �T���v���ɕt���� net.py �� SP �� CNN �p�̃N���X��ǉ����܂����B
+MNIST サンプルに付属の net.py に SP と CNN 用のクラスを追加しました。
 
 ```python
 import chainer
@@ -47,9 +47,9 @@ class MnistMLP(chainer.Chain):
         h2 = F.relu(self.l2(h1))
         return self.l3(h2)
 
-# �����܂ŃI���W�i���̂܂܁B
+# ここまでオリジナルのまま。
 
-# ��������ǉ������N���X
+# ここから追加したクラス
 
 class MnistSP(chainer.Chain):
 
@@ -86,7 +86,7 @@ class MnistCNN(chainer.Chain):
     def __call__(self, x):
         # param x --- chainer.Variable of array
 
-        # �ȉ��̂悤�ȕϊ����K�v
+        # 以下のような変換が必要
         x.data = x.data.reshape((len(x.data), 1, 28, 28))
 
         h = F.relu(self.conv1(x))
@@ -102,29 +102,29 @@ class MnistCNN(chainer.Chain):
 
 ```
 
-Convolution2D �̓��͂��킩��ɂ��������B
+Convolution2D の入力がわかりにくかった。
 
-�w�K���s���X�N���v�g train_mnist.py �͎g�p�����j���[�����l�b�g���[�N�̃O���t�f�[�^�� dot �`���ŏo�͂��Ă���܂��Bgraphviz �� PNG �ɕϊ����܂����B�����N���Ƃ��܂��F
+学習を行うスクリプト train_mnist.py は使用したニューラルネットワークのグラフデータを dot 形式で出力してくれます。graphviz で PNG に変換しました。リンクしときます：
 
-[MnistSP �̃O���t](graph.sp.png) 
+[MnistSP のグラフ](graph.sp.png) 
 
-[MnistMLP �̃O���t](graph.mlp.png) 
+[MnistMLP のグラフ](graph.mlp.png) 
 
-[MnistCNN �̃O���t](graph.cnn.png) 
+[MnistCNN のグラフ](graph.cnn.png) 
 
-## ����
+## 結果
 
-�������肢���ƁAaccuracy (�����قǗǂ�)�ł� SP �� 0.93�AMLP �� 0.98�ACNN �� 0.99�B
-loss (�Ⴂ�قǗǂ�)�ł� SP �� 0.26�AMLP �� 0.1�ACNN �� 0.05�B
+ざっくりいうと、accuracy (高いほど良い)では SP が 0.93、MLP が 0.98、CNN が 0.99。
+loss (低いほど良い)では SP が 0.26、MLP が 0.1、CNN が 0.05。
 
-�Ƃ����킯�� MNIST �̎菑�������̔F���ɂ����āA���񌟏؂������ł� CNN ���ł��D�ꂽ�������Ƃ������Ƃ��m�F�ł��܂����B
+というわけで MNIST の手書き数字の認識において、今回検証した中では CNN が最も優れた方式だということを確認できました。
 
 ![accuracy](fig_accuracy.png)
 ![loss](fig_loss.png)
 
-## �����N
+## リンク
 [Chainer](http://chainer.org/)
 
-[CNN�̎����ŎQ�l�ɂ����y�[�W](http://ttlg.hateblo.jp/entry/2016/02/11/181322)
+[CNNの実装で参考にしたページ](http://ttlg.hateblo.jp/entry/2016/02/11/181322)
 
-[�R�[�h�͂�����ɂ܂Ƃ߂Ă����Ă܂�](https://github.com/bunji2/study_chainer_mnist)
+[コードはこちらにまとめておいてます](https://github.com/bunji2/study_chainer_mnist)
